@@ -22,7 +22,7 @@ public class HomeActivity extends AppCompatActivity
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView( R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -87,12 +87,18 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
+            Intent menu = new Intent(this,UploadActivity.class);
+            this.startActivity(menu);
+            return true;
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
+            Intent menu = new Intent(this,SettingsActivity.class);
+            this.startActivity(menu);
+            return true;
 
         } else if (id == R.id.nav_share) {
 
