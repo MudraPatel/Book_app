@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/bghome"
+    tools:context="com.example.manarpatel.book_app.AboutusActivity">
+
+
+
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/scrollView"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_marginTop="20dp"
+        android:layout_height="fill_parent"
+        android:weightSum="1">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text=" 'Rise and rise again until lambs becoms lions'                                                                 - Robin Hood  "
+            android:id="@+id/textView8"
+            android:textSize="30sp"
+            android:layout_alignTop="@+id/scrollView"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="'Read and read again until flies become  bookworms'                                                            - Thrift Book"
+            android:id="@+id/textView9"
+            android:textSize="30dp"
+            android:layout_below="@+id/textView8"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="35dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Ever lusted over a book but had to control yourself because it was too expensive?"
+            android:id="@+id/textView10"
+            android:textColor="#C71585"
+            android:layout_below="@+id/textView9"
+            android:layout_marginTop="25dp"
+            android:layout_alignParentStart="true" />
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Worry Not!, Because Thrift Book is here to answer all your literary prayers. Knoweledge is priceless but the books come and the Thrift Book Team is committed to bring to you the best of the brilliantfrom the world pf written text, at prices which are literally a steal"
+            android:textColor="#7e0e2d"
+            android:id="@+id/textView11"
+            android:layout_below="@+id/textView10"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="24dp"
+            android:layout_weight="0.28" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#8e0a8d"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="The Books will always wait for you like loyal lovers with faithful hearts and the our team, promises to be the best wingman ever."
+            android:id="@+id/textView12"
+            android:layout_below="@+id/textView11"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="24dp"
+            android:layout_weight="0.28" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Thrift Book has a unique system for curating its inventory which follows a one kind method of systematic upgrading based on alogrithm which take into account the global and regional trends along with consumer demands."
+            android:id="@+id/textView13"
+            android:textColor="#3e1e8f"
+            android:layout_below="@+id/textView12"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="24dp"
+            android:layout_weight="0.28" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Like a single flame can light a million lamps, we understand the passion a book lover has for those old and new book scents and thus ensure that we offer our readers both the options of buying low priced new books or even lower priced second hand books."
+            android:id="@+id/textView14"
+            android:textColor="#8e0a8d"
+            android:layout_below="@+id/textView13"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="24dp"
+            android:layout_weight="0.28" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text=" Thus,with a goal to bring a revolution through education."
+            android:id="@+id/textView15"
+            android:textColor="@color/colorAccent"
+            android:layout_below="@+id/textView14"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="24dp"
+            android:layout_weight="0.28" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView2"
+
+            android:layout_below="@+id/textView15"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="MEET THE TEAM"
+            android:textSize="24dp"
+            android:textColor="@color/MediumVioletRed"
+            android:id="@+id/textView16"
+            android:layout_below="@+id/imageView2"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="24dp"
+            android:layout_weight="0.28" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Guided : Prof. Kalpana Bodke , Co-guide: Prof.Brinda"
+            android:textSize="24dp"
+            android:layout_marginTop="12dp"
+            android:textColor="@color/colorAccent"
+            android:id="@+id/textView20"
+            android:layout_below="@+id/textView16"
+            android:layout_alignParentStart="true"
+
+            android:layout_weight="0.28" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView3"
+            android:layout_marginTop="25dp"
+            android:layout_below="@+id/textView20"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Mudra Patel"
+            android:textSize="24dp"
+            android:textColor="@color/colorAccent"
+            android:id="@+id/textView17"
+            android:layout_below="@+id/imageView3"
+            android:layout_alignParentStart="true"
+
+            android:layout_weight="0.28" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/socialim1"
+            android:layout_below="@+id/textView17"/>
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView4"
+            android:layout_marginTop="25dp"
+            android:layout_below="@+id/socialim1"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Sneha Srivastava"
+            android:textColor="@color/colorAccent"
+            android:textSize="24sp"
+            android:id="@+id/textView18"
+            android:layout_below="@+id/imageView4"
+            android:layout_alignParentStart="true"
+
+            android:layout_weight="0.28" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/socialim2"
+            android:layout_below="@+id/textView18"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView5"
+            android:layout_marginTop="25dp"
+            android:layout_below="@+id/socialim2"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Pooja Yadav"
+            android:textSize="24sp"
+            android:textColor="@color/colorAccent"
+            android:id="@+id/textView19"
+            android:layout_below="@+id/imageView5"
+            android:layout_alignParentStart="true"
+
+            android:layout_weight="0.28" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/socialim3"
+            android:layout_below="@+id/textView19"/>
+
+
+
+    </LinearLayout>
+    </ScrollView>
+
+
+
+</RelativeLayout>
