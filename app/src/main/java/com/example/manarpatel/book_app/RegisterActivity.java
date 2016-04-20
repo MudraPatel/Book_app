@@ -1,215 +1,250 @@
 package com.example.manarpatel.book_app;
 
-
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.StrictMode;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
-
-import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
+public class RegisterActivity extends AppCompatActivity {
 
+    private EditText editTextName;
+    private EditText editTextEmail;
+    private EditText editTextContact;
+    private EditText editTextPassword;
+    private ProgressDialog progressDialog;
+    String[] cities = {"Mumbai","Navi_Mumbai ","Pune"};
+    String[] Area = {"CST","Cottongreen","GTB","Mankhurd","Kharghar","Vashi","Panvel","Vadala","Churgate","Malad","Nerul","Thane","Dadar"};
+    Spinner spinnerDropDown;
+    Spinner spinnerDropDown1;
 
-public class RegisterActivity extends AppCompatActivity  {
-
-    Button button;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-
-    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-    private GoogleApiClient client;
-
-    //  private View mPassword;
-    //  private View mPassword1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-      /*  FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        editTextName = (EditText) findViewById(R.id.editTextName);
+        editTextEmail = (EditText) findViewById(R.id.editTextEmail);
+        editTextContact = (EditText) findViewById(R.id.editTextContact);
+        editTextPassword = (EditText) findViewById(R.id.editTextPassword);
+        spinnerDropDown =(Spinner)findViewById(R.id.spinner1);
+        spinnerDropDown1 =(Spinner)findViewById(R.id.spinner2);
+        //Spinner For Cities
+        ArrayAdapter<String> adapter= new ArrayAdapter<String>(this,android.
+                R.layout.simple_spinner_dropdown_item,cities);
+
+        spinnerDropDown.setAdapter(adapter);
+
+        spinnerDropDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
             @Override
-
-
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int position, long id) {
+                // Get select item
+                int sid1 = spinnerDropDown.getSelectedItemPosition();
             }
-        }); */
-      /*  mPassword = findViewById(R.id.password);
-        mPassword1 = findViewById(R.id.password1);
-        if(R.id.password==R.id.password1){
-            addListenerOnButton();
-             }
-      System.out.println("Incorrect  password"); */
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // TODO Auto-generated method stub
+            }
+        });
+        //Spinner For States
+        ArrayAdapter<String> adapter1= new ArrayAdapter<String>(this,android.
+                R.layout.simple_spinner_dropdown_item,Area);
+
+        spinnerDropDown1.setAdapter(adapter1);
+
+        spinnerDropDown1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int position, long id) {
+                // Get select item
+                int sid2 = spinnerDropDown.getSelectedItemPosition();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // TODO Auto-generated method stub
+            }
+        });
+        Button login = (Button)findViewById(R.id.login);
+        login.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+
+            public void onClick(View v) {
+
+                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+
+                startActivity(intent);
+
+            }
+
+        });
 
 
-        Button button = (Button) findViewById(R.id.button1);
-        button.setOnClickListener(new OnClickListener() {
-            public void onClick(View view) {
+    }
 
-                String result = null;
-                InputStream is = null;
-                EditText editText = (EditText) findViewById(R.id.name);
-                String v1 = editText.getText().toString();
-                EditText editText1 = (EditText) findViewById(R.id.mobile);
-                String v2 = editText1.getText().toString();
-                EditText editText2 = (EditText) findViewById(R.id.email);
-                String v3 = editText2.getText().toString();
-              ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 
-                nameValuePairs.add(new BasicNameValuePair("name", v1));
-                nameValuePairs.add(new BasicNameValuePair("mobile", v2));
-                nameValuePairs.add(new BasicNameValuePair("email", v3));
 
-                StrictMode.setThreadPolicy(policy);
 
-                //http post
+        public void insert(View view) {
+        String name = editTextName.getText().toString();
+        String email = editTextEmail.getText().toString();
+        String sid1 =  spinnerDropDown.getSelectedItem().toString();
+        String sid2 =  spinnerDropDown1.getSelectedItem().toString();
+        String contact = editTextContact.getText().toString();
+        String password = editTextPassword.getText().toString();
+
+     //   String cities = cities.getText().toString();
+       // String states = states.getText().toString();
+
+        //String email1 = email.getText().toString().trim();
+        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+
+        boolean invalid = false;
+        if (name.equals("")) {
+            invalid = true;
+            Toast.makeText(getApplicationContext(), "Please Enter your Name",
+                    Toast.LENGTH_SHORT).show();
+        } else if (email.equals("")) {
+            invalid = true;
+            Toast.makeText(getApplicationContext(), "Please Enter your  EmailID",
+                    Toast.LENGTH_SHORT).show();
+        } else if (!email.matches(emailPattern)) {
+            invalid = true;
+            Toast.makeText(getApplicationContext(),
+                    "Please enter Correct EmailID", Toast.LENGTH_SHORT).show();
+        }
+        else if (!email.contains("@")) {
+            invalid = true;
+            Toast.makeText(getApplicationContext(), "Please Enter your  Valid EmailID",
+                    Toast.LENGTH_SHORT).show();
+        }else if (contact.equals("")) {
+            invalid = true;
+            Toast.makeText(getApplicationContext(), "Please Enter your Contact No.",
+                    Toast.LENGTH_SHORT).show();
+        } else if (contact.length() != 10) {
+            invalid = true;
+            Toast.makeText(getApplicationContext(),
+                    "Please enter atleast 10 digits contact number", Toast.LENGTH_SHORT).show();
+        } else if (password.equals("")) {
+            invalid = true;
+            Toast.makeText(getApplicationContext(), "Please Enter your Password", Toast.LENGTH_SHORT).show();
+        } else if (password.length() < 6) {
+            invalid = true;
+            Toast.makeText(getApplicationContext(),
+                    "Please enter atleast 6 digits password", Toast.LENGTH_SHORT).show();
+        } else if (invalid == false) {
+            insertToDatabase(name, email, contact, password,sid1, sid2);
+            // finish();
+        }
+    }
+
+
+    public void insertToDatabase(String name, String email, String contact, String password,String sid1, String sid2) {
+        class SendPostReqAsyncTask extends AsyncTask<String, Void, String> {
+            private ProgressDialog progressDialog;
+
+            @Override
+            protected String doInBackground(String... params) {
+                String paramUsername = params[0];
+                String paramEmail = params[1];
+                String ParamContact = params[2];
+                String paramPassword = params[3];
+                String paramsDropDown = params[4];
+                String paramsDropDown1 = params[5];
+
+
+
+                String name = editTextName.getText().toString();
+                String email = editTextEmail.getText().toString();
+                String contact = editTextContact.getText().toString();
+                String password = editTextPassword.getText().toString();
+                String sid1 = spinnerDropDown.getSelectedItem().toString();
+                String sid2 = spinnerDropDown1.getSelectedItem().toString();
+
+
+
+                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+                nameValuePairs.add(new BasicNameValuePair("name", name));
+                nameValuePairs.add(new BasicNameValuePair("email", email));
+                nameValuePairs.add(new BasicNameValuePair("contact", contact));
+                nameValuePairs.add(new BasicNameValuePair("password", password));
+                nameValuePairs.add(new BasicNameValuePair("sid1", sid1));
+                nameValuePairs.add(new BasicNameValuePair("sid2", sid2));
+
                 try {
-                    HttpClient httpclient = new DefaultHttpClient();
-                    HttpPost httppost = new HttpPost("http://localhost/Book_app/register.php");
-                    httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-                    HttpResponse response = httpclient.execute(httppost);
-                    HttpEntity entity = response.getEntity();
-                    is = entity.getContent();
+                    HttpClient httpClient = new DefaultHttpClient();
+                    HttpPost httpPost = new HttpPost(
+                            "http://usedbookapp.esy.es/insert.php");
+                    httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
-                    Log.e("log_tag", "connection success ");
-                    Toast.makeText(getApplicationContext(), "pass", Toast.LENGTH_SHORT).show();
-                } catch (Exception e) {
-                    Log.e("log_tag", "Error in http connection " + e.toString());
-                    Toast.makeText(getApplicationContext(), "Connection fail", Toast.LENGTH_SHORT).show();
+                    HttpResponse response = httpClient.execute(httpPost);
+
+                    HttpEntity entity = response.getEntity();
+
+
+                } catch (ClientProtocolException e) {
+
+                } catch (IOException e) {
 
                 }
-                //convert response to string
-                try {
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
-                    StringBuilder sb = new StringBuilder();
-                    String line = null;
-                    while ((line = reader.readLine()) != null) {
-                        sb.append(line + "\n");
-                        Intent i = new Intent(getBaseContext(), LoginActivity.class);
+                return "success";
+
+            }
+
+            @Override
+            protected void onPostExecute(String result) {
+                super.onPostExecute(result);
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(RegisterActivity.this);
+                alertDialog.setTitle("Successful...");
+                alertDialog.setMessage("Registration Successful!!!");
+             //   alertDialog.setIcon(R.drawable.tick);
+                alertDialog.setPositiveButton("Next", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent i = new Intent(RegisterActivity.this,LoginActivity.class);
+                        finish();
                         startActivity(i);
                     }
-                    is.close();
-
-                    result = sb.toString();
-                } catch (Exception e) {
-                    Log.e("log_tag", "Error converting result " + e.toString());
-                }
-
-
-                try {
-
-                    JSONObject json_data = new JSONObject(result);
-
-                    CharSequence w = (CharSequence) json_data.get("re");
-
-                    Toast.makeText(getApplicationContext(), w, Toast.LENGTH_SHORT).show();
-
-
-                } catch (JSONException e) {
-                    Log.e("log_tag", "Error parsing data " + e.toString());
-                    Toast.makeText(getApplicationContext(), "JsonArray fail", Toast.LENGTH_SHORT).show();
-                }
-
+                });
+                alertDialog.show();
+                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
 
             }
-        });
 
-
-        //addListenerOnButton();
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-       // client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+        }
+        SendPostReqAsyncTask sendPostReqAsyncTask = new SendPostReqAsyncTask();
+        sendPostReqAsyncTask.execute(name, email, contact, password,sid1,sid2);
     }
-   /*  @Override
-   public void onStart() {
-        super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "Register Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app deep link URI is correct.
-                Uri.parse("android-app://com.example.manarpatel.book_app/http/host/path")
-        );
-        AppIndex.AppIndexApi.start(client, viewAction);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "Register Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app deep link URI is correct.
-                Uri.parse("android-app://com.example.manarpatel.book_app/http/host/path")
-        );
-        AppIndex.AppIndexApi.end(client, viewAction);
-        client.disconnect();
-
-    }  */
-
-//Early code:
-   /* public void addListenerOnButton() {
-
-        final Context context = this;
-
-        button = (Button) findViewById(R.id.button1);
-
-        button.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View arg0) {
-
-                Intent intent = new Intent(context, LoginActivity.class);
-                startActivity(intent);
-            }
-
-        });
-
-    } */
-
 
 }
+
+

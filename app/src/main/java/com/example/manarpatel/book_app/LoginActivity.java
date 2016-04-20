@@ -1,376 +1,465 @@
 package com.example.manarpatel.book_app;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
-import android.content.Context;
+
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.app.LoaderManager.LoaderCallbacks;
-
-import android.content.CursorLoader;
-import android.content.Loader;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.AsyncTask;
-
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.text.TextUtils;
-import android.view.KeyEvent;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Toast;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.Manifest.permission.READ_CONTACTS;
+public class LoginActivity extends AppCompatActivity
+{
 
-/**
- * A login screen that offers login via email/password.
- */
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+    private EditText editTextUserName;
+    private EditText editTextPassword;
+    SessionHandler SessionHandler;
 
-        Button button;
-    /**
-     * Id to identity READ_CONTACTS permission request.
-     */
-    private static final int REQUEST_READ_CONTACTS = 0;
+//    SharedPreferences.Editor editor;
+    // Context
+    //  Context _context;
+    // All Shared Preferences Keys
+    //private static final String IS_LOGIN = "IsLoggedIn";
+    // User name (make variable public to access from outside)
+    //public static final String KEY_NAME = "name";
+    // Email address (make variable public to access from outside)
+    // public static final String KEY_PASS = "password";
+    //public static final String PREF_NAME = "MyPreference";
+    // SharedPreferences sharedPreferences;
 
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
-    private UserLoginTask mAuthTask = null;
+    public static final String Name = "nameKey";
+    public static final String Password = "passwordKey";
+   // private Button buttonnew2;
+    String email;
 
-    // UI references.
-    private AutoCompleteTextView mEmailView;
-    private EditText mPasswordView;
-    private View mProgressView;
-    private View mLoginFormView;
+    String password;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-        populateAutoComplete();
 
-        mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        SessionHandler = new SessionHandler(this);
+        editTextUserName = (EditText) findViewById(R.id.editTextUserName);
+        editTextPassword = (EditText) findViewById(R.id.password);
+       // buttonnew2 = (Button) findViewById(R.id.button2);
+
+       // buttonnew2.setOnClickListener( this);
+        Button registerButton = (Button) findViewById(R.id.registration);
+
+        registerButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
+
+            public void onClick(View v) {
+
+                Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
+
+                startActivity(intent);
+
+            }
+
+        });
+
+    }
+
+    public void invokelogin(View view) {
+        email = editTextUserName.getText().toString();
+        password = editTextPassword.getText().toString();
+
+        login(email, password);
+
+    }
+
+    private void login(final String email, final String password) {
+
+        class LoginAsync extends AsyncTask<String, Void, String> {
+
+            private Dialog loadingDialog;
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                loadingDialog = ProgressDialog.show(LoginActivity.this, "Please wait", "Loading...");
+            }
+
+            @Override
+            protected String doInBackground(String... params) {
+                String email = params[0];
+                String pass = params[1];
+
+                InputStream is = null;
+                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+                nameValuePairs.add(new BasicNameValuePair("email", email));
+                nameValuePairs.add(new BasicNameValuePair("password", pass));
+                String result = null;
+
+                try {
+                    HttpClient httpClient = new DefaultHttpClient();
+                    HttpPost httpPost = new HttpPost(
+                            "http://usedbookapp.esy.es/login.php");
+                    httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+                    HttpResponse response = httpClient.execute(httpPost);
+
+                    HttpEntity entity = response.getEntity();
+
+                    is = entity.getContent();
+
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"), 8);
+                    StringBuilder sb = new StringBuilder();
+
+                    String line = null;
+                    while ((line = reader.readLine()) != null) {
+                        sb.append(line + "\n");
+                    }
+                    result = sb.toString();
+                } catch (ClientProtocolException e) {
+                    e.printStackTrace();
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                return false;
+                return result;
             }
-        });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View view) {
-                attemptLogin();
-                addListenerOnButton();
+            protected void onPostExecute(String result) {
+                String s = result.trim();
+                loadingDialog.dismiss();
+                if (s.equalsIgnoreCase("success")) {
+                    SessionHandler.createLoginSession(email, password);
+                    Toast.makeText(getApplicationContext(), "Welcome:" +editTextUserName.getText().toString(), Toast.LENGTH_LONG).show();
 
+                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                   // finish();
+                 //   startActivity(intent);
+                    intent.putExtra("username", editTextUserName.getText().toString());
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Invalid User Name or Password", Toast.LENGTH_LONG).show();
+                }
             }
+        }
 
+        LoginAsync la = new LoginAsync();
+        la.execute(email, password);
 
-        });
+    }
+    /*
+    @Override
+    public void onClick(View v) {
 
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
+        if (v == buttonnew2) {
+            //invokelogin(v);
+           Intent intent = new Intent(this, RegisterActivity.class);
 
-
+            startActivity(intent);
+        }
+    }
+*/
 }
-    private void populateAutoComplete() {
-        if (!mayRequestContacts()) {
-            return;
-        }
 
-        getLoaderManager().initLoader(0, null, this);
+/*
+   @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.activity_home_drawer, menu);
+        return true;
     }
 
-    private boolean mayRequestContacts() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return true;
-        }
-        if (checkSelfPermission(READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        }
-        if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
-            Snackbar.make(mEmailView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
-                    .setAction(android.R.string.ok, new View.OnClickListener() {
-                        @Override
-                        @TargetApi(Build.VERSION_CODES.M)
-                        public void onClick(View v) {
-                            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-                        }
-                    });
-        } else {
-            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-        }
-        return false;
-    }
-
-    /**
-     * Callback received when a permissions request has been completed.
-     */
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_READ_CONTACTS) {
-            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                populateAutoComplete();
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+    */
+
+
+
+
+/*
+
+
+public class LoginActivity extends AppCompatActivity
+{
+
+    protected EditText username;
+
+    private EditText password;
+
+    protected String enteredUsername;
+
+    private final String serverUrl = "http://usedbookapp.esy.es/login.php";
+
+    @Override
+
+    protected void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_login);
+
+        username = (EditText)findViewById(R.id.editTextUserName);
+
+        password = (EditText)findViewById(R.id.password);
+
+        Button loginButton = (Button)findViewById(R.id.login);
+
+        Button registerButton = (Button)findViewById(R.id.registerbutton);
+
+        loginButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+
+            public void onClick(View v) {
+
+                enteredUsername = username.getText().toString();
+
+                String enteredPassword = password.getText().toString();
+
+
+
+// request authentication with remote server4
+
+                AsyncDataClass asyncRequestObject = new AsyncDataClass();
+
+                asyncRequestObject.execute(serverUrl, enteredUsername, enteredPassword);
+
             }
-        }
+
+        });
+
+        registerButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+
+            public void onClick(View v) {
+
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+
+                startActivity(intent);
+
+            }
+
+        });
+
     }
 
+   /* @Override
 
-    /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
-     */
-    private void attemptLogin() {
-        if (mAuthTask != null) {
-            return;
-        }
+   // public boolean onCreateOptionsMenu(Menu menu) {
 
-        // Reset errors.
-        mEmailView.setError(null);
-        mPasswordView.setError(null);
+// Inflate the menu; this adds items to the action bar if it is present.
 
-        // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
+      //  getMenuInflater().inflate(R.menu.menu_main, menu);
 
-        boolean cancel = false;
-        View focusView = null;
+       // return true;
 
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
-
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
-            cancel = true;
-        } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
-            cancel = true;
-        }
-
-        if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
-            focusView.requestFocus();
-        } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
-        }
-    }
-
-    private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
-    }
-
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
-    }
-
-    /**
-     * Shows the progress UI and hides the login form.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    private void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
-
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mProgressView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
-        } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-        }
-    }
+   // }
 
     @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return new CursorLoader(this,
-                // Retrieve data rows for the device user's 'profile' contact.
-                Uri.withAppendedPath(ContactsContract.Profile.CONTENT_URI,
-                        ContactsContract.Contacts.Data.CONTENT_DIRECTORY), ProfileQuery.PROJECTION,
 
-                // Select only email addresses.
-                ContactsContract.Contacts.Data.MIMETYPE +
-                        " = ?", new String[]{ContactsContract.CommonDataKinds.Email
-                .CONTENT_ITEM_TYPE},
+    public boolean onOptionsItemSelected(MenuItem item) {
 
-                // Show primary email addresses first. Note that there won't be
-                // a primary email address if the user hasn't specified one.
-                ContactsContract.Contacts.Data.IS_PRIMARY + " DESC");
-    }
+// Handle action bar item clicks here. The action bar will
 
-    @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        List<String> emails = new ArrayList<>();
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            emails.add(cursor.getString(ProfileQuery.ADDRESS));
-            cursor.moveToNext();
+// automatically handle clicks on the Home/Up button, so long
+
+// as you specify a parent activity in AndroidManifest.xml.
+
+        int id = item.getItemId();
+
+//noinspection SimplifiableIfStatement
+
+        if (id == R.id.action_settings) {
+
+            return true;
+
         }
 
-        addEmailsToAutoComplete(emails);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
+        return super.onOptionsItemSelected(item);
 
     }
 
-    private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
-        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(LoginActivity.this,
-                        android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
-
-        mEmailView.setAdapter(adapter);
-    }
-
-
-    private interface ProfileQuery {
-        String[] PROJECTION = {
-                ContactsContract.CommonDataKinds.Email.ADDRESS,
-                ContactsContract.CommonDataKinds.Email.IS_PRIMARY,
-        };
-
-        int ADDRESS = 0;
-        int IS_PRIMARY = 1;
-    }
-
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mEmail;
-        private final String mPassword;
-
-        UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
-        }
+    private class AsyncDataClass extends AsyncTask<String, Void, String> {
 
         @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
+
+        protected String doInBackground(String... params) {
+
+            HttpParams httpParameters = new BasicHttpParams();
+
+            HttpConnectionParams.setConnectionTimeout(httpParameters, 5000);
+
+            HttpConnectionParams.setSoTimeout(httpParameters, 5000);
+
+            HttpClient httpClient = new DefaultHttpClient(httpParameters);
+
+            HttpPost httpPost = new HttpPost(params[0]);
+
+            String jsonResult = "";
 
             try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
+
+                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+
+                nameValuePairs.add(new BasicNameValuePair("username", params[1]));
+
+                nameValuePairs.add(new BasicNameValuePair("password", params[2]));
+
+                httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+                HttpResponse response = httpClient.execute(httpPost);
+
+                jsonResult = inputStreamToString(response.getEntity().getContent()).toString();
+
+            } catch (ClientProtocolException e) {
+
+                e.printStackTrace();
+
+            } catch (IOException e) {
+
+                e.printStackTrace();
+
             }
 
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
+            return jsonResult;
 
-            // TODO: register the new account here.
-            return true;
         }
 
         @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
 
-            if (success) {
-                finish();
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
-            }
+        protected void onPreExecute() {
+
+            super.onPreExecute();
+
         }
 
         @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
-        }
-    }
-    public void addListenerOnButton() {
 
-        final Context context = this;
+        protected void onPostExecute(String result) {
 
-        button = (Button) findViewById(R.id.email_sign_in_button);
+            super.onPostExecute(result);
 
-        button.setOnClickListener(new OnClickListener() {
+            System.out.println("Resulted Value: " + result);
 
-            @Override
-            public void onClick(View arg0) {
+            if(result.equals("") || result == null){
 
-                Intent intent = new Intent(context, HomeActivity.class);
+                Toast.makeText(LoginActivity.this, "Server connection failed", Toast.LENGTH_LONG).show();
+
+                return;
+
+            }
+
+            int jsonResult = returnParsedJsonObject(result);
+
+            if(jsonResult == 0){
+
+                Toast.makeText(LoginActivity.this, "Invalid username or password", Toast.LENGTH_LONG).show();
+
+                return;
+
+            }
+
+            if(jsonResult == 1){
+
+                Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
+
+                intent.putExtra("USERNAME", enteredUsername);
+
+                intent.putExtra("MESSAGE", "You have been successfully login");
+
                 startActivity(intent);
+
             }
 
-        });
+        }
+
+        private StringBuilder inputStreamToString(InputStream is) {
+
+            String rLine = "";
+
+            StringBuilder answer = new StringBuilder();
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+
+            try {
+
+                while ((rLine = br.readLine()) != null) {
+
+                    answer.append(rLine);
+
+                }
+
+            } catch (IOException e) {
+
+// TODO Auto-generated catch block
+
+                e.printStackTrace();
+
+            }
+
+            return answer;
+
+        }
 
     }
-}
 
+    private int returnParsedJsonObject(String result){
+
+        JSONObject resultObject = null;
+
+        int returnedResult = 0;
+
+        try {
+
+            resultObject = new JSONObject(result);
+
+            returnedResult = resultObject.getInt("success");
+
+        } catch (JSONException e) {
+
+            e.printStackTrace();
+
+        }
+
+        return returnedResult;
+
+    }
+
+}
+*/

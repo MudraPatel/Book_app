@@ -9,30 +9,24 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/bghome"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.manarpatel.book_app.UploadActivity"
     tools:showIn="@layout/activity_upload">
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/scrollView">
 
 
-    <Button
-        android:layout_width="250dp"
-        android:layout_height="50dp"
-        android:text="Capture Image"
-        android:id="@+id/capture"
-        android:layout_marginLeft="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignEnd="@+id/text3"
-        android:layout_marginBottom="86dp" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_marginTop="20dp"
+            android:layout_height="fill_parent">
 
-    <Button
-        android:layout_width="250dp"
-        android:layout_height="50dp"
-        android:text="upload Image"
-        android:id="@+id/upload"
-        android:layout_marginLeft="50dp"
-        android:layout_above="@+id/capture"
-        android:layout_centerHorizontal="true" />
 
+    <!--
 <TextView
 android:layout_width="400dp"
 android:layout_height="90dp"
@@ -71,23 +65,375 @@ android:textSize="45dp"
 android:textColor="#050505"
 android:height="50dp"
 android:layout_centerVertical="true"
-android:layout_alignParentStart="true" />
+android:layout_alignParentStart="true" /> -->
 
-<TextView
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:text="Upload Book Picture"
-android:layout_gravity="center_horizontal"
-android:id="@+id/text3"
-android:textAlignment="center"
-android:textSize="20dp"
-android:textColor="#787af4"
-android:layout_alignParentTop="true"
-android:layout_centerHorizontal="true" />
-
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Upload Book Picture"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/text3"
+                android:textAlignment="center"
+                android:textSize="20dp"
+                android:textColor="#787af4"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
 
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Choose Image"
+                android:id="@+id/buttonChoose"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:background="#00008B"
+                android:layout_below="@+id/selling"
+                android:layout_alignEnd="@+id/author_name" />
+
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/imageView" />
+
+            <!-- <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:text="Email"
+                 android:textSize="30dp"/>-->
+
+            <!--Email-->
+            <EditText
+                android:id="@+id/etUploadName"
+                android:layout_width="match_parent"
+                android:layout_marginTop="2dp"
+                android:layout_height="wrap_content"
+                android:hint="ImageName(ex:pmudra12@gmail.com then image name = pmudra12 or pmudra121,pmudra122..etc)" />
+
+            <Button
+                android:layout_width="250dp"
+                android:layout_height="50dp"
+                android:text="upload Image "
+                android:id="@+id/buttonupload"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:layout_marginTop="25dp"
+                android:background="#00008B"
+                android:layout_marginLeft="50dp"
+                android:layout_above="@+id/capture"
+                android:layout_centerHorizontal="true" />
+
+<!--
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Author Name:"
+        android:id="@+id/author"
+        android:height="38dp"
+        android:width="190dp"
+        android:textSize="23dp"
+
+        android:layout_below="@+id/text3"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/author_name"
+        android:height="43dp"
+        android:width="180dp"
+        android:textSize="24dp"
+        android:layout_below="@+id/text3"
+        android:layout_alignParentEnd="true" />   -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Author Name :"
+                android:textColor="#000000"
+                android:id="@+id/author"
+                android:layout_marginTop="25dp"
+                android:height="50dp"
+                android:width="190dp"
+                android:textSize="23dp"
+                android:layout_below="@+id/author"
+                android:layout_alignParentStart="true" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/author_name"
+                android:height="50dp"
+                android:width="200dp"
+                android:textSize="25dp"
+                android:layout_alignTop="@+id/author"
+                android:layout_toEndOf="@+id/author" />
+
+
+     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Publisher Name:"
+        android:id="@+id/publisher"
+        android:textColor="#000000"
+        android:height="50dp"
+        android:width="190dp"
+        android:textSize="23dp"
+        android:layout_below="@+id/author"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/publisher_name"
+        android:height="50dp"
+        android:width="200dp"
+        android:textSize="25dp"
+        android:layout_alignTop="@+id/publisher"
+        android:layout_toEndOf="@+id/publisher" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Book Name:"
+        android:textColor="#000000"
+        android:id="@+id/book"
+        android:height="50dp"
+        android:width="190dp"
+        android:textSize="25dp"
+        android:layout_below="@+id/publisher"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/book_name"
+        android:height="50dp"
+        android:width="200dp"
+        android:textSize="25dp"
+        android:layout_below="@+id/publisher"
+        android:layout_alignEnd="@+id/publisher_name" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Department:"
+        android:textColor="#000000"
+        android:id="@+id/department"
+        android:height="50dp"
+        android:width="190dp"
+        android:textSize="25dp"
+        android:layout_below="@+id/book"
+        android:layout_alignParentStart="true" />
+<!--
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/eddepart"
+        android:height="50dp"
+        android:width="200dp"
+        android:textSize="25dp"
+        android:layout_below="@+id/book"
+        android:layout_alignEnd="@+id/book_name" /> -->
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#ffffff"
+                android:textColorHint="#ffffff"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp">
+
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:spinnerMode="dropdown"
+                    android:textColor="#ffffff"
+                    android:textSize="90sp"
+                    android:textColorHint="#ffffff"
+                    android:id="@+id/depart"
+                    android:hint="Department" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Conditon of Book:"
+                android:textColor="#000000"
+                android:id="@+id/condition_book"
+                android:height="60dp"
+                android:width="250dp"
+                android:textSize="25dp"
+                android:layout_below="@+id/depart"
+                android:layout_alignParentStart="true" />
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#ffffff"
+                android:textSize="25dp"
+                android:textColorHint="#ffffff"
+                android:layout_marginTop="7dp"
+                android:layout_marginBottom="8dp">
+
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:spinnerMode="dropdown"
+                    android:textColor="#ffffff"
+                    android:textSize="100sp"
+                    android:textColorHint="#ffffff"
+                    android:id="@+id/condition"
+                    android:hint="Condition of Book" />
+            </android.support.design.widget.TextInputLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Selling Price:"
+            android:textColor="#000000"
+            android:id="@+id/selling"
+            android:height="50dp"
+            android:width="150dp"
+            android:textSize="25dp"
+            android:layout_below="@+id/condition_book"
+            android:layout_alignParentStart="true" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rs:"
+            android:id="@+id/Rs"
+            android:height="50dp"
+            android:width="30dp"
+            android:textSize="25dp"
+            android:layout_below="@+id/condition"
+            android:layout_alignParentStart="true" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/selling_price"
+            android:height="50dp"
+            android:width="180dp"
+            android:textSize="25dp"
+            android:layout_below="@+id/condition"
+            android:layout_alignEnd="@+id/condition_book" />
+
+    </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:text="Username:"
+                    android:id="@+id/user"
+                    android:height="50dp"
+                    android:width="150dp"
+                    android:textSize="25dp"
+                    android:layout_below="@+id/Rs"
+                    android:layout_alignParentStart="true" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/name"
+                    android:height="50dp"
+                    android:width="210dp"
+                    android:textSize="25dp"
+                    android:layout_below="@+id/selling_price"
+                    android:layout_alignEnd="@+id/selling" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:textColor="#000000"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mobile:"
+                    android:id="@+id/number"
+                    android:height="50dp"
+                    android:width="150dp"
+                    android:textSize="25dp"
+                    android:layout_below="@+id/user"
+                    android:layout_alignParentStart="true" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/mobile"
+                    android:height="50dp"
+                    android:width="210dp"
+                    android:textSize="25dp"
+                    android:layout_below="@+id/name"
+                    />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:text="Location:"
+                    android:id="@+id/loc"
+                    android:height="50dp"
+                    android:width="150dp"
+                    android:textSize="25dp"
+                    android:layout_below="@+id/user"
+                    android:layout_alignParentStart="true" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/location"
+                    android:height="50dp"
+                    android:width="210dp"
+                    android:textSize="25dp"
+                    android:layout_below="@+id/name"
+                    />
+
+            </LinearLayout>
+
+           <!-- <Button
+                android:layout_width="190dp"
+                android:layout_height="50dp"
+                android:text="Capture Image"
+                android:id="@+id/capture"
+                android:layout_marginLeft="50dp"
+                android:layout_alignTop="@+id/submit"
+                android:layout_alignEnd="@+id/buttonupload" /> -->
+
+
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Submit"
+                android:id="@+id/buttonSubmit"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:background="#00008B"
+                android:textAlignment="center"
+                android:layout_marginTop="25dp"
+                android:layout_marginLeft="70dp"
+                android:layout_marginBottom="54dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true" />
+
+        </LinearLayout>
+    </ScrollView>
 </RelativeLayout>
 
 

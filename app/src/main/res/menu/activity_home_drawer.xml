@@ -6,14 +6,39 @@
             android:id="@+id/nav_camera"
             android:icon="@drawable/ic_menu_camera"
             android:title="Upload" />
-        <item
+      <!--  <item
             android:id="@+id/nav_gallery"
             android:icon="@drawable/ic_menu_gallery"
             android:title="Profile" />
+        -->
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_comp"
+            android:icon="@drawable/ic_menu_send"
+            android:title="Computer" />
+        <item
+            android:id="@+id/nav_extc"
+            android:icon="@drawable/ic_menu_send"
+            android:title="EXTC" />
+        <item
+            android:id="@+id/nav_mech"
+            android:icon="@drawable/ic_menu_send"
+            android:title="Mechanical" />
+        <item
+            android:id="@+id/nav_civil"
+            android:icon="@drawable/ic_menu_send"
+            android:title="Civil" />
+        <item
+            android:id="@+id/nav_electrical"
+            android:icon="@drawable/ic_menu_send"
+            android:title="Electrical" />
+        <item
+            android:id="@+id/nav_sell"
+            android:icon="@drawable/ic_menu_send"
+            android:title="Your Sell Book" />
+        <item
+            android:id="@+id/nav_contact"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="Contact" />
+            android:title="Contact Us" />
         <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"
@@ -27,9 +52,14 @@
                 android:icon="@drawable/ic_menu_share"
                 android:title="Share" />
             <item
-                android:id="@+id/nav_send"
+                android:id="@+id/nav_about_us"
                 android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:title="About Us" />
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_menu_send"
+                android:title="logout" />
+
         </menu>
     </item>
 
